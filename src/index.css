@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #040116;
+}
+
+::-webkit-scrollbar {
+	display:none;
+}
+
+body,
+html {
+	width: 100%;
+}
+
+.contactinput .ant-input::placeholder {
+	color: white; 
+	opacity: 0.5;    
+	
+}
+
+
