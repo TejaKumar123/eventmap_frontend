@@ -6,7 +6,7 @@ const Admin_speaker_row = ({ icon, name, username, email, sessions, date }) => {
 			<tr className="text-[95%]" key={username}>
 				<td className="p-[5px] text-center">{icon}</td>
 				<td className="p-[2px_0px] text-center">{name}</td>
-				<td className="p-[2px_0px] text-center">{username}</td>
+				{/* <td className="p-[2px_0px] text-center">{username}</td> */}
 				<td className="p-[2px_0px] text-center">{email}</td>
 				<td className="text-center">{sessions}</td>
 				<td className="p-[2px_0px] text-center">{date}</td>

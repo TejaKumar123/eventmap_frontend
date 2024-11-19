@@ -1,5 +1,6 @@
 import Admin_session_card from "../../basic/admin/Admin_session_card"
-import sessionData from "../../../assets/data/data"
+import { sessionData } from "../../../assets/data/data"
+import { Suspense, lazy } from "react"
 
 const Session_view = () => {
 	return (
@@ -7,7 +8,11 @@ const Session_view = () => {
 			{
 				sessionData.map((data) => {
 					if (data["acceptance"] == "accepted") {
-						return <Admin_session_card cardData={data} />
+						return (
+
+							<Admin_session_card cardData={data} />
+
+						)
 					}
 				})
 			}

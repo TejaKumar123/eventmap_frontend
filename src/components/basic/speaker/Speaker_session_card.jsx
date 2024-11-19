@@ -1,15 +1,15 @@
-import { Check, ImageSharp, Sensors } from "@mui/icons-material";
+import { Cancel, Check, Sensors } from "@mui/icons-material";
 import moment from "moment";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Admin_session_card = ({ cardData }) => {
+const Speaker_session_card = ({ cardData }) => {
 
 	const [sessionData, setSessionData] = useState(cardData);
 	const navigate = useNavigate();
 
 	const sessionDetails = () => {
-		navigate(`/admin/sessions/details`, { state: { session: cardData } });
+		navigate(`/speaker/sessions/details`, { state: { session: cardData } });
 	}
 
 	return (
@@ -19,13 +19,15 @@ const Admin_session_card = ({ cardData }) => {
 			>
 				{sessionData["acceptance"] == "accepted" &&
 					< div className="absolute w-auto h-auto top-[5px] right-[5px] rounded-[50%] flex items-center justify-center">
-						{sessionData["status"]
+						{sessionData["status"] == 1
 							? <div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[green]">
 								<Check />
 							</div>
-							: <div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[red]">
+							:
+							<div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[red]">
 								<Sensors />
 							</div>
+
 						}
 					</div>
 				}
@@ -44,4 +46,4 @@ const Admin_session_card = ({ cardData }) => {
 	)
 }
 
-export default Admin_session_card
+export default Speaker_session_card

@@ -18,6 +18,13 @@ import Session_view from "../components/major/admin/Session_view";
 import Session_add from "../components/major/admin/Session_add";
 import Admin_session_details from "../components/major/admin/Admin_session_details";
 import Session_edit from "../components/major/admin/Session_edit";
+import Speaker_session from "../components/major/speaker/Speaker_session";
+import Speaker_session_add from "../components/major/speaker/Speaker_session_add";
+import Speaker_session_edit from "../components/major/speaker/Speaker_session_edit";
+import Speaker_session_view from "../components/major/speaker/Speaker_session_view";
+import Speaker_settings from "../components/major/speaker/Speaker_settings";
+import Speaker_session_home from "../components/major/speaker/Speaker_session_home";
+import Speaker_session_details from "../components/major/speaker/Speaker_session_details";
 
 const IndexRoute = () => {
 
@@ -37,7 +44,7 @@ const IndexRoute = () => {
 						<Route path="requests" element={<Session_request />} />
 						<Route path="view" element={<Session_view />} />
 						<Route path="add" element={<Session_add />} />
-						<Route path=":sessionid" element={<Admin_session_details />} />
+						<Route path="details" element={<Admin_session_details />} />
 						<Route path="edit" element={<Session_edit />} />
 					</Route>
 					<Route path="speakers" element={<Admin_speakers />} />
@@ -46,7 +53,14 @@ const IndexRoute = () => {
 				</Route>
 				{/* <Route path="/speaker" element={login && role == "speaker" ? <Speaker /> : <Navigate to={"/login"} />} /> */}
 				<Route path="/speaker" element={<Speaker />} >
-
+					<Route path="sessions" element={<Speaker_session />}>
+						<Route path="" element={<Speaker_session_home />} />
+						<Route path="add" element={<Speaker_session_add />} />
+						<Route path="edit" element={<Speaker_session_edit />} />
+						<Route path="view" element={<Speaker_session_view />} />
+						<Route path="details" element={<Speaker_session_details />} />
+					</Route>
+					<Route path="settings" element={<Speaker_settings />} />
 				</Route>
 				<Route path="/participant" element={login && role == "participant" ? <Participant /> : <Navigate to={"/login"} />} />
 				<Route path="*" element={<Notfound />} />

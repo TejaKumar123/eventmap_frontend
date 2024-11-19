@@ -1,5 +1,5 @@
 import Admin_session_card from "../../basic/admin/Admin_session_card"
-import sessionData from "../../../assets/data/data"
+import { sessionData } from "../../../assets/data/data"
 
 const Session_request = () => {
 	return (

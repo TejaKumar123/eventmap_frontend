@@ -1,12 +1,10 @@
-import Templatediv1 from "../../basic/other/Templatediv1"
-import { sessionData } from "../../../assets/data/data"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { ArrowBack, Edit } from "@mui/icons-material"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Session_detail_box from "../../basic/admin/Session_detail_box"
 import moment from "moment"
 
-const Admin_session_details = () => {
+const Speaker_session_details = () => {
 
 
 	const location = useLocation();
@@ -18,15 +16,11 @@ const Admin_session_details = () => {
 	}
 
 	const editDetail = () => {
-		navigate("/admin/sessions/edit", { state: { sessionData: session } });
+		navigate("/speaker/sessions/edit", { state: { sessionData: session } });
 	}
 
-	const accept = () => {
-		alert("accepted");
-	}
-
-	const reject = () => {
-		alert("rejected");
+	const CancelRequest = () => {
+		alert("request cancel");
 	}
 
 	/* useEffect(() => {
@@ -39,8 +33,8 @@ const Admin_session_details = () => {
 	}, []) */
 
 	return (
-		<Templatediv1>
-			<div className="w-full h-auto flex flex-row items-center justify-between sticky top-[-10px] mb-[20px] bg-[#1b1342] py-[10px] px-[10px]">
+		<>
+			<div className="w-full h-auto flex flex-row items-center justify-between sticky top-[0px] mb-[20px] py-[10px] px-[10px]">
 				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={back} title="BACK">
 					<ArrowBack />
 				</div>
@@ -64,24 +58,27 @@ const Admin_session_details = () => {
 					<Session_detail_box text1={session?.["venue"]} text2={"venue"} />
 					{session?.["acceptance"] == "pending" &&
 						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
-							<button className="bg-green-700 px-[20px] py-[1px] rounded-[20px]" onClick={accept}>Accept</button>
-							<button className="bg-red-700 px-[20px] py-[1px] rounded-[20px]" onClick={reject}>Reject</button>
+
+							<button className="bg-red-700 px-[20px] py-[1px] rounded-[20px]" onClick={CancelRequest}>CancelRequest</button>
 						</div>
 					}
 				</div>
 			</div>
 			{
 				session?.["status"] == 1 && session?.["acceptance"] == "accepted" &&
-				<div className="w-full h-auto mt-[20px]">
-					<p className="font-bold text-[150%] mb-[20px]">Feedbacks</p>
-					<div className="w-full h-[250px] overflow-y-auto border">
+				<div className="w-full h-auto px-[15px] py-[15px]">
+					<p className="font-bold text-[150%] mb-[15px]">Feedbacks</p>
+					<div className="w-full h-[500px] border overflow-y-auto">
 
 					</div>
 				</div>
+
+
 			}
+
 			<br />
-		</Templatediv1>
+		</>
 	)
 }
 
-export default Admin_session_details
+export default Speaker_session_details

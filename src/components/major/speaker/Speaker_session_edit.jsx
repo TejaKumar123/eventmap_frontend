@@ -1,12 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom"
-import Templatediv1 from "../../basic/other/Templatediv1"
 import { ArrowBack } from "@mui/icons-material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Errordesign from "../../basic/home/errordesign";
 import moment from "moment";
 
-const Session_edit = () => {
+const Speaker_session_edit = () => {
 
 	const location = useLocation();
 	const { sessionData } = location.state || {};
@@ -14,6 +13,10 @@ const Session_edit = () => {
 
 	const back = () => {
 		navigate(-1);
+	}
+
+	const handleSessionEdit = (data) => {
+		alert(JSON.stringify(data));
 	}
 
 	const validationSchema = Yup.object({
@@ -38,13 +41,14 @@ const Session_edit = () => {
 			}
 			setImageerror("");
 			handleSessionAdd(values, imageobj); */
-			alert(JSON.stringify(values));
+			let data = JSON.parse(JSON.stringify(values));
+			handleSessionEdit(data);
 		},
 	})
 
 	return (
-		<Templatediv1>
-			<div className="w-full h-auto">
+		<>
+			<div className="w-full h-auto px-[15px] py-[15px]">
 				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,0.5)] hover:border-[rgba(255,255,255,1)] transition-[0.2s] border-[2px] flex items-center justify-center cursor-pointer text-white sticky top-[0px] mb-[10px] bg-[#1b1342]" onClick={back} title="BACK">
 					<ArrowBack />
 				</div>
@@ -119,8 +123,8 @@ const Session_edit = () => {
 					</form>
 				</div>
 			</div>
-		</Templatediv1>
+		</>
 	)
 }
 
-export default Session_edit
+export default Speaker_session_edit;
