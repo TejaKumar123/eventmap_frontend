@@ -34,7 +34,7 @@ const Speaker_session_details = () => {
 
 	return (
 		<>
-			<div className="w-full h-auto flex flex-row items-center justify-between sticky top-[0px] mb-[20px] py-[10px] px-[10px]">
+			<div className="w-full h-auto flex flex-row items-center justify-between sticky top-[0px] mb-[20px] py-[15px] px-[15px]">
 				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={back} title="BACK">
 					<ArrowBack />
 				</div>
@@ -42,7 +42,7 @@ const Speaker_session_details = () => {
 					<Edit />
 				</div>}
 			</div>
-			<div className="w-full h-auto flex flex-row items-start justify-start gap-[20px]">
+			<div className="w-full h-auto flex flex-row items-start justify-start gap-[20px] px-[15px] py-[15px]">
 				<div className="w-[40%] h-auto border-[0px] rounded-[10px] shadow-[0px_0px_10px_4px_rgba(0,0,0,0.2)]">
 					<img src={session?.["session_image"] || "/temp.jpeg"} className="object-cover object-top w-full rounded-[10px]" />
 				</div>

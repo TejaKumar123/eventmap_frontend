@@ -49,7 +49,7 @@ const Speaker_session_edit = () => {
 	return (
 		<>
 			<div className="w-full h-auto px-[15px] py-[15px]">
-				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,0.5)] hover:border-[rgba(255,255,255,1)] transition-[0.2s] border-[2px] flex items-center justify-center cursor-pointer text-white sticky top-[0px] mb-[10px] bg-[#1b1342]" onClick={back} title="BACK">
+				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,0.5)] hover:border-[rgba(255,255,255,1)] transition-[0.2s] border-[2px] flex items-center justify-center cursor-pointer text-white sticky top-[0px] mb-[10px]" onClick={back} title="BACK">
 					<ArrowBack />
 				</div>
 				<p className="text-center font-bold text-[150%] mt-[10px]">Edit Sessison</p>
