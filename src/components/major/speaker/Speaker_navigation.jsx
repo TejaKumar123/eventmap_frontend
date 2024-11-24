@@ -23,7 +23,7 @@ const Speaker_navigation = () => {
 	}, [url])
 
 	return (
-		<div className="w-full h-[50px] flex flex-row items-center justify-center sticky top-[60px] mt-[70px]  overflow-x-auto text-white px-[20px] gap-[10px] bg-[#1b1342] z-[5]">
+		<div className="w-full h-[50px] flex flex-row items-center justify-center sticky top-[60px] mt-[60px]  overflow-x-auto text-white px-[20px] gap-[10px] bg-[#1b1342] z-[5]">
 			<Speaker_sidebar_button name={"Session"} keyStatus={key} button_key={0} icon={<Visibility />}
 				onClick={() => {
 					setKey(0);

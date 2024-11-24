@@ -25,6 +25,11 @@ import Speaker_session_view from "../components/major/speaker/Speaker_session_vi
 import Speaker_settings from "../components/major/speaker/Speaker_settings";
 import Speaker_session_home from "../components/major/speaker/Speaker_session_home";
 import Speaker_session_details from "../components/major/speaker/Speaker_session_details";
+import Participant_settings from "../components/major/participant/Participant_settings";
+import Participant_session from "../components/major/participant/Participant_session";
+import Participant_session_view from "../components/major/participant/Participant_session_view";
+import Participant_session_details from "../components/major/participant/Participant_session_details";
+import Participants_session_registrations from "../components/major/participant/Participants_session_registrations";
 
 const IndexRoute = () => {
 
@@ -62,7 +67,15 @@ const IndexRoute = () => {
 					</Route>
 					<Route path="settings" element={<Speaker_settings />} />
 				</Route>
-				<Route path="/participant" element={login && role == "participant" ? <Participant /> : <Navigate to={"/login"} />} />
+				{/* <Route path="/participant" element={login && role == "participant" ? <Participant /> : <Navigate to={"/login"} />} /> */}
+				<Route path="/participant" element={<Participant />} >
+					<Route path="sessions" element={<Participant_session />}>
+						<Route path="view" element={<Participant_session_view />} />
+						<Route path="details" element={<Participant_session_details />} />
+						<Route path="registrations" element={<Participants_session_registrations />} />
+					</Route>
+					<Route path="settings" element={<Participant_settings />} />
+				</Route>
 				<Route path="*" element={<Notfound />} />
 			</Routes>
 		</>

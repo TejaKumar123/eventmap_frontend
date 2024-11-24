@@ -1,13 +1,13 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { ArrowBack, Edit, Send } from "@mui/icons-material"
+import { ArrowBack, Send } from "@mui/icons-material"
 import { useState, useEffect } from "react"
 import Session_detail_box from "../../basic/admin/Session_detail_box"
 import moment from "moment"
 import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data"
-import Speaker_feedback from "../../basic/speaker/Speaker_feedback"
+import Participant_feedback from "../../basic/participant/Participant_feedback"
 
-const Speaker_session_details = () => {
+const Participant_session_details = () => {
 
 
 	const location = useLocation();
@@ -18,12 +18,8 @@ const Speaker_session_details = () => {
 		navigate(-1, { replace: true });
 	}
 
-	const editDetail = () => {
-		navigate("/speaker/sessions/edit", { state: { sessionData: session } });
-	}
-
-	const CancelRequest = () => {
-		alert("request cancel");
+	const registerSession = () => {
+		alert("registered");
 	}
 
 	const handleFeedback = async (data) => {
@@ -44,11 +40,10 @@ const Speaker_session_details = () => {
 	useEffect(() => {
 		let stateSession = location.state;
 		if (!stateSession?.session) {
-			navigate("/speaker/sessions/view");
+			navigate("/participant/sessions/view");
 			/* alert(stateSession); */
 		}
 	}, [])
-
 
 	return (
 		<>
@@ -56,9 +51,6 @@ const Speaker_session_details = () => {
 				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={back} title="BACK">
 					<ArrowBack />
 				</div>
-				{session?.["acceptance"] != "rejected" && session?.["status"] != 1 && <div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={editDetail} title="EDIT">
-					<Edit />
-				</div>}
 			</div>
 			<div className="w-full h-auto flex flex-row items-start justify-start gap-[20px] px-[15px] py-[15px]">
 				<div className="w-[40%] h-auto border-[0px] rounded-[10px] shadow-[0px_0px_10px_4px_rgba(0,0,0,0.2)]">
@@ -74,10 +66,10 @@ const Speaker_session_details = () => {
 					<Session_detail_box text1={session?.["session_name"]} text2={"session-name"} />
 					<Session_detail_box text1={session?.["session_description"]} text2={"session-Description"} />
 					<Session_detail_box text1={session?.["venue"]} text2={"venue"} />
-					{session?.["status"] == 0 &&
-						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
 
-							<button className="bg-red-700 px-[20px] py-[1px] rounded-[20px]" onClick={CancelRequest}>CancelRequest</button>
+					{session?.["status"] == 0 && session?.["acceptance"] == "accepted" &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-blue-700 px-[20px] py-[2px] rounded-[20px] text-[120%]" onClick={registerSession}>Register</button>
 						</div>
 					}
 				</div>
@@ -90,7 +82,7 @@ const Speaker_session_details = () => {
 						{
 							feedbackData.map((data) => {
 								if (data?.["session_id"] != session?.["session_id"]) {
-									return <Speaker_feedback feedback={data} />
+									return <Participant_feedback feedback={data} />
 								}
 							})
 						}
@@ -123,4 +115,4 @@ const Speaker_session_details = () => {
 	)
 }
 
-export default Speaker_session_details
+export default Participant_session_details;

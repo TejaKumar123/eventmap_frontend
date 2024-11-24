@@ -25,20 +25,25 @@ const login = () => {
 
 	const handleLogin = async (res) => {
 		try {
-			console.log(res);
+			console.log(res.access_token);
+			let userData = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${res.access_token}`);
+			/* console.log(userData); */
+
 		}
 		catch (err) {
 			console.log(err);
 		}
 	}
 
+	/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email', */
+	/* accessType: 'offline',
+	prompt: 'consent',
+	flow: "auth-code" */ /// flow:"auth-code gives only code not access-token so we we have to remove it to get ccess-token"
+
 	const login = useGoogleLogin({
 		onSuccess: (res) => handleLogin(res),
 		onError: (er) => console.log(er),
-		/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email', */
-		accessType: 'offline',
-		prompt: 'consent',
-		flow: "auth-code"
+
 	})
 
 	const normalLogin = async (data) => {

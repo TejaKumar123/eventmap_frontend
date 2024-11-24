@@ -23,7 +23,7 @@ const Admin_session_card = ({ cardData }) => {
 							? <div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[green]">
 								<Check />
 							</div>
-							: <div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[red]">
+							: <div className="flex items-center justify-center w-full h-full p-[5px] rounded-[50%] bg-[orange]">
 								<Sensors />
 							</div>
 						}
