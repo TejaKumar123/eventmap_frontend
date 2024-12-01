@@ -58,12 +58,6 @@ const signup = () => {
 		flow: "auth-code"
 	})
 
-	const validationSchema = Yup.object({
-		name: Yup.string().required("required"),
-		email: Yup.string().email("invalid email").required("required"),
-		password: Yup.string().min(8, "Password should contain 8 characters").required("required"),
-		againpassword: Yup.string().equals([Yup.ref("password")], "password should matched").required("*required")
-	})
 
 	const normalSignup = async (data) => {
 		setLoading(true);
@@ -75,7 +69,7 @@ const signup = () => {
 			//console.log(res);
 			if (res?.data?.status == "ok" && res?.data?.user) {
 				toast(res?.data?.message);
-				//console.log(res);
+				console.log(res);
 				dispatch(setUser(res?.data?.user));
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 				navigate("/dashboard", { replace: true })
@@ -91,10 +85,16 @@ const signup = () => {
 		setLoading(false);
 	}
 
+	const validationSchema = Yup.object({
+		username: Yup.string().required("required"),
+		email: Yup.string().email("invalid email").required("required"),
+		password: Yup.string().min(8, "Password should contain 8 characters").required("required"),
+		againpassword: Yup.string().equals([Yup.ref("password")], "password should matched").required("*required")
+	})
 
 	const formik = useFormik({
 		initialValues: {
-			name: "",
+			username: "",
 			email: "",
 			password: "",
 			againpassword: ""
@@ -116,12 +116,12 @@ const signup = () => {
 				<form className="w-full flex flex-col items-start justify-start gap-[15px]" onSubmit={formik.handleSubmit} autoComplete="off">
 					<Input
 						type="text"
-						placeholder="Name"
+						placeholder="Username"
 						className="contactinput"
 						style={{ backgroundColor: "black", color: "white" }}
 						suffix={<Person />}
-						name="name"
-						value={formik.values.name}
+						name="username"
+						value={formik.values.username}
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>

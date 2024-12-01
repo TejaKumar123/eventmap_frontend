@@ -30,6 +30,7 @@ import Participant_session from "../components/major/participant/Participant_ses
 import Participant_session_view from "../components/major/participant/Participant_session_view";
 import Participant_session_details from "../components/major/participant/Participant_session_details";
 import Participants_session_registrations from "../components/major/participant/Participants_session_registrations";
+import RefreshHandler from "../components/private/refreshHandler";
 
 const IndexRoute = () => {
 
@@ -38,6 +39,7 @@ const IndexRoute = () => {
 
 	return (
 		<>
+			<RefreshHandler />
 			<Routes>
 				<Route path="/" element={login ? <Navigate to={"/dashboard"} /> : <Homepage />} />
 				<Route path="/login" element={login ? <Navigate to={"/dashboard"} /> : <Login />} />

@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react"
 import axios from "axios";
 import { setUser } from "../../store/slices/userSlice";
 
-const refreshHandler = () => {
+const RefreshHandler = () => {
 	const dispatch = useDispatch();
 
 	useLayoutEffect(() => {
@@ -38,4 +38,4 @@ const refreshHandler = () => {
 	)
 }
 
-export default refreshHandler;
+export default RefreshHandler;

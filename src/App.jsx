@@ -4,7 +4,6 @@ import RefreshHandler from "./components/private/refreshHandler"
 const App = () => {
 	return (
 		<>
-			<RefreshHandler />
 			<IndexRoute />
 		</>
 	)
