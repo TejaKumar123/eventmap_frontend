@@ -29,7 +29,7 @@ const signup = () => {
 		try {
 			res["type"] = "google";
 			res["code"] = res.code;
-			const result = await axios.post("http://localhost:3000/auth/signup", res, {
+			const result = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/signup`, res, {
 				withCredentials: true,
 			});
 			if (result?.data?.status == "ok" && result?.data?.user) {

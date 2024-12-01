@@ -23,16 +23,28 @@ const login = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const handleLogin = async (res) => {
+	const handleLogin = async (data) => {
+		setLoading(true);
+		data["type"] = "google"
 		try {
-			console.log(res.access_token);
-			let userData = await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${res.access_token}`);
-			/* console.log(userData); */
-
+			let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, data, {
+				withCredentials: true
+			});
+			if (res?.data?.status == "ok") {
+				toast.success(res?.data?.message);
+				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
+				dispatch(setUser(res?.data?.user));
+				navigate("/dashboard", { replace: true })
+			}
+			else if (res?.data?.status == "error") {
+				toast.error(res?.data?.message);
+			}
 		}
 		catch (err) {
+			toast.error("error occured");
 			console.log(err);
 		}
+		setLoading(false);
 	}
 
 	/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email', */
@@ -43,7 +55,7 @@ const login = () => {
 	const login = useGoogleLogin({
 		onSuccess: (res) => handleLogin(res),
 		onError: (er) => console.log(er),
-
+		flow: "auth-code"
 	})
 
 	const normalLogin = async (data) => {
@@ -54,17 +66,17 @@ const login = () => {
 				withCredentials: true
 			});
 			if (res?.data?.status == "ok") {
-				toast(res?.data?.message);
+				toast.success(res?.data?.message);
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 				dispatch(setUser(res?.data?.user));
 				navigate("/dashboard", { replace: true })
 			}
-			else if (res?.data?.status == "rejected") {
-				toast(res?.data?.message);
+			else if (res?.data?.status == "error") {
+				toast.error(res?.data?.message);
 			}
 		}
 		catch (er) {
-			toast("error occured");
+			toast.error("error occured");
 			console.log({ error: er });
 		}
 		setLoading(false);
