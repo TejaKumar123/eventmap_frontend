@@ -14,7 +14,7 @@ const RefreshHandler = () => {
 					{
 						withCredentials: true,
 					});
-				console.log({ res: res });
+				/* console.log({ res: res }); */
 				if (res?.data?.login && res?.data?.user) {
 					dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 					dispatch(setUser(res?.data?.user));
