@@ -25,24 +25,34 @@ const signup = () => {
 	const dispatch = useDispatch();
 
 	const handleSignup = async (res) => {
+		setLoading(true);
 		try {
-			/* res["type"] = "google";
+			res["type"] = "google";
+			res["code"] = res.code;
 			const result = await axios.post("http://localhost:3000/auth/signup", res, {
 				withCredentials: true,
 			});
-			console.log(result); */
-			console.log(res);
+			if (result?.data?.status == "ok" && result?.data?.user) {
+				toast.success(result?.data?.message);
+				dispatch(setUser(result.data.user));
+				dispatch(setAuthDet({ login: true, role: result?.data?.user?.role }))
+				navigate("/dashboard", { replace: true });
+			}
+			else {
+				toast.error(result?.data?.message);
+			}
 		}
 		catch (err) {
 			console.log(err);
 		}
+		setLoading(false);
 	}
 
 	const signup = useGoogleLogin({
 		onSuccess: (res) => handleSignup(res),
 		onError: (er) => console.log(er),
-		/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email', */
-		/* accessType: 'offline',
+		/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email',
+		accessType: 'offline',
 		prompt: 'consent', */
 		flow: "auth-code"
 	})
@@ -69,7 +79,7 @@ const signup = () => {
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 				navigate("/dashboard", { replace: true })
 			}
-			else if (res?.data?.status == "rejected") {
+			else if (res?.data?.status == "error") {
 				toast(res?.data?.message);
 			}
 		}
