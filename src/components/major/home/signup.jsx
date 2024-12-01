@@ -43,7 +43,8 @@ const signup = () => {
 			}
 		}
 		catch (err) {
-			console.log(err);
+			toast.error("error occured");
+			/* console.log(err); */
 		}
 		setLoading(false);
 	}
@@ -85,7 +86,7 @@ const signup = () => {
 		}
 		catch (er) {
 			toast("error occured");
-			console.log({ error: er });
+			/* console.log({ error: er }); */
 		}
 		setLoading(false);
 	}

@@ -42,7 +42,7 @@ const login = () => {
 		}
 		catch (err) {
 			toast.error("error occured");
-			console.log(err);
+			/* console.log(err); */
 		}
 		setLoading(false);
 	}
