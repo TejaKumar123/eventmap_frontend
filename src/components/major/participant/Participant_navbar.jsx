@@ -1,7 +1,7 @@
 import { AccountCircle, ArrowDropDown, Logout, Settings } from "@mui/icons-material"
 import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { logout, setAuthDet } from "../../../store/slices/authSlice";
 import { setUser } from "../../../store/slices/userSlice";
@@ -14,6 +14,7 @@ const Participant_navbar = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const dispatch = useDispatch();
+	const { user } = useSelector(state => state.user);
 
 	const handleClose = () => {
 		setAnchorElement(null);
@@ -45,7 +46,7 @@ const Participant_navbar = () => {
 	}, [location.pathname]);
 
 	return (
-		<div className="text-white w-full h-[60px] bg-[#1b1342] border-[#1B182D] flex flex-row items-center justify-between px-[15px] pt-[10px] fixed top-[0px] z-[10]">
+		<div className="text-white w-full h-[60px] bg-[#1b1342] border-[#1B182D] flex flex-row items-center justify-between px-[15px] pt-[10px] fixed top-[0px] z-[10] pb-[10px]">
 			<p className="font-bold text-[130%]">EventMap</p>
 			<div className="text-white min-w-[100px] h-full flex flex-row items-center justify-between gap-[15px]">
 				<div className="min-w-[100px] h-[100%] flex flex-row items-center justify-between gap-[30px] mr-[20px]">
@@ -67,12 +68,16 @@ const Participant_navbar = () => {
 					</div>
 
 				</div>
-				<div className="rounded-[50%] flex items-center justify-center">
-					<AccountCircle />
+				<div className="rounded-[50%] h-[90%] flex items-center justify-center">
+					{user?.profileimage
+						? <img src={user?.profileimage} className="h-full rounded-[50%]" />
+						:
+						< AccountCircle />
+					}
 				</div>
 				<div className="w-fit h-full flex flex-col items-center justify-around">
-					<p className="text-[95%]">N.Teja kumar</p>
-					<p className="text-[95%]">Participant</p>
+					<p className="text-[95%]">{user?.name}</p>
+					<p className="text-[95%]">{user?.role}</p>
 				</div>
 				<div className="p-[4px] rounded-[50%] border-[#1B182D] hover:border-[white] flex items-center justify-center border cursor-pointer"
 					onClick={handleOpen}

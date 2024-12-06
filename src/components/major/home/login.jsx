@@ -31,10 +31,10 @@ const login = () => {
 				withCredentials: true
 			});
 			if (res?.data?.status == "ok") {
-				toast.success(res?.data?.message);
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 				dispatch(setUser(res?.data?.user));
-				navigate("/dashboard", { replace: true })
+
+				/* navigate("/dashboard", { replace: true }) */
 			}
 			else if (res?.data?.status == "error") {
 				toast.error(res?.data?.message);

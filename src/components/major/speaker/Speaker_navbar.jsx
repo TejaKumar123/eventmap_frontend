@@ -1,7 +1,7 @@
 import { AccountCircle, ArrowDropDown, Logout, Settings } from "@mui/icons-material"
 import { Menu } from "@mui/material";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout, setAuthDet } from "../../../store/slices/authSlice";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +13,7 @@ const Speaker_navbar = () => {
 	const [anchorElement, setAnchorElement] = useState(null);
 	const open = Boolean(anchorElement);
 	const dispatch = useDispatch();
+	const { user } = useSelector(state => state.user);
 
 	const handleClose = () => {
 		setAnchorElement(null);
@@ -35,15 +36,19 @@ const Speaker_navbar = () => {
 	}
 
 	return (
-		<div className="text-white w-full h-[60px] bg-[#1b1342] border-[#1B182D] flex flex-row items-center justify-between px-[15px] pt-[10px] fixed top-[0px] z-[10]">
+		<div className="text-white w-full h-[60px] bg-[#1b1342] border-[#1B182D] flex flex-row items-center justify-between px-[15px] pt-[10px] fixed top-[0px] z-[10] pb-[10px]">
 			<p className="font-bold text-[110%]">Speaker</p>
 			<div className="text-white min-w-[100px] h-full flex flex-row items-center justify-between gap-[15px]">
-				<div className="rounded-[50%] flex items-center justify-center">
-					<AccountCircle />
+				<div className="rounded-[50%] h-[90%] flex items-center justify-center">
+					{user?.profileimage
+						? <img src={user?.profileimage} className="h-full rounded-[50%]" />
+						:
+						< AccountCircle />
+					}
 				</div>
 				<div className="w-fit h-full flex flex-col items-center justify-around">
-					<p className="text-[95%]">N.Teja kumar</p>
-					<p className="text-[95%]">Speaker</p>
+					<p className="text-[95%]">{user?.name}</p>
+					<p className="text-[95%]">{user?.role}</p>
 				</div>
 				<div className="p-[4px] rounded-[50%] border-[#1B182D] hover:border-[white] flex items-center justify-center border cursor-pointer"
 					onClick={handleOpen}
