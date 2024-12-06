@@ -65,7 +65,7 @@ const login = () => {
 			let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, data, {
 				withCredentials: true
 			});
-			console.log(res);
+			/* console.log(res); */
 			if (res?.data?.status == "ok") {
 				toast.success(res?.data?.message);
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));

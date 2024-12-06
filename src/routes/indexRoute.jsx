@@ -45,8 +45,7 @@ const IndexRoute = () => {
 				<Route path="/login" element={login ? <Navigate to={"/dashboard"} /> : <Login />} />
 				<Route path="/signup" element={login ? <Navigate to={"/dashboard"} /> : <Signup />} />
 				<Route path="/dashboard" element={login ? <Dashboard /> : <Navigate to={"/login"} />} />
-				{/* <Route path="/admin" element={login && role == "admin" ? <Admin /> : <Navigate to={"/login"} />} /> */}
-				<Route path="/admin" element={<Admin />}>
+				<Route path="/admin" element={login && role == "admin" ? <Admin /> : <Navigate to={"/login"} />}>
 					<Route path="sessions" element={<Admin_session />} >
 						<Route path="requests" element={<Session_request />} />
 						<Route path="view" element={<Session_view />} />
@@ -58,8 +57,7 @@ const IndexRoute = () => {
 					<Route path="participant" element={<Admin_participant />} />
 					<Route path="settings" element={<Admin_settings />} />
 				</Route>
-				{/* <Route path="/speaker" element={login && role == "speaker" ? <Speaker /> : <Navigate to={"/login"} />} /> */}
-				<Route path="/speaker" element={<Speaker />} >
+				<Route path="/speaker" element={login && role == "speaker" ? <Speaker /> : <Navigate to={"/login"} />} >
 					<Route path="sessions" element={<Speaker_session />}>
 						<Route path="" element={<Speaker_session_home />} />
 						<Route path="add" element={<Speaker_session_add />} />
@@ -69,8 +67,7 @@ const IndexRoute = () => {
 					</Route>
 					<Route path="settings" element={<Speaker_settings />} />
 				</Route>
-				{/* <Route path="/participant" element={login && role == "participant" ? <Participant /> : <Navigate to={"/login"} />} /> */}
-				<Route path="/participant" element={<Participant />} >
+				<Route path="/participant" element={login && role == "participant" ? <Participant /> : <Navigate to={"/login"} />} >
 					<Route path="sessions" element={<Participant_session />}>
 						<Route path="view" element={<Participant_session_view />} />
 						<Route path="details" element={<Participant_session_details />} />

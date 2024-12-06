@@ -48,10 +48,10 @@ const Admin_sidebar = () => {
 					setKey(3);
 					navigate("settings", { replace: true });
 				}} />
-				<div className="w-full flex items-center justify-start gap-[10px] px-[15px] py-[5px] text-[red] mt-[10px] cursor-pointer">
+				{/* <div className="w-full flex items-center justify-start gap-[10px] px-[15px] py-[5px] text-[red] mt-[10px] cursor-pointer">
 					<Logout />
 					<p>Logout</p>
-				</div>
+				</div> */}
 
 			</div>
 		</>

@@ -5,11 +5,17 @@ import Settings from "@mui/icons-material/Settings"
 import Logout from "@mui/icons-material/Logout"
 import AccountCircle from "@mui/icons-material/AccountCircle"
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout, setAuthDet } from "../../../store/slices/authSlice";
+import { setUser } from "../../../store/slices/userSlice";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Admin_navbar = () => {
 
 	const [anchorElement, setAnchorElement] = useState(null);
 	const open = Boolean(anchorElement);
+	const dispatch = useDispatch();
 
 	const handleClose = () => {
 		setAnchorElement(null);
@@ -17,6 +23,19 @@ const Admin_navbar = () => {
 	const handleOpen = (event) => {
 		setAnchorElement(event.currentTarget);
 	};
+
+	const UserLogout = async () => {
+		dispatch(logout({})).then((action) => {
+			/* console.log(action); */
+			if (action?.payload?.status == "ok") {
+				dispatch(setAuthDet({ login: false, role: null }));
+				dispatch(setUser({}));
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+	}
 
 	return (
 		<div className="w-full h-[60px] bg-[#1b1342] border-[#1B182D] flex flex-row items-center justify-between px-[15px] pt-[10px] fixed top-[0px] z-[10]">
@@ -77,12 +96,13 @@ const Admin_navbar = () => {
 						<Settings />
 						<p>Settings</p>
 					</div>
-					<div className="w-[100%] h-auto flex gap-[5px] text-[white] px-[15px] py-[5px] cursor-pointer text-[95%]">
+					<div className="w-[100%] h-auto flex gap-[5px] text-[white] px-[15px] py-[5px] cursor-pointer text-[95%]" onClick={UserLogout}>
 						<Logout />
 						<p>Logout</p>
 					</div>
 				</div>
 			</Menu>
+
 		</div >
 	)
 }

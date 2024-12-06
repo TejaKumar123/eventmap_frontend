@@ -68,14 +68,14 @@ const signup = () => {
 			});
 			//console.log(res);
 			if (res?.data?.status == "ok" && res?.data?.user) {
-				toast(res?.data?.message);
+				toast.success(res?.data?.message);
 				console.log(res);
 				dispatch(setUser(res?.data?.user));
 				dispatch(setAuthDet({ login: true, role: res?.data?.user?.role }));
 				navigate("/dashboard", { replace: true })
 			}
 			else if (res?.data?.status == "error") {
-				toast(res?.data?.message);
+				toast.error(res?.data?.message);
 			}
 		}
 		catch (er) {
@@ -125,7 +125,7 @@ const signup = () => {
 						onChange={formik.handleChange}
 						onBlur={formik.handleBlur}
 					/>
-					{formik.touched.name && formik.errors.name ? <Errordesign>{formik.errors.name}</Errordesign> : null}
+					{formik.touched.username && formik.errors.username ? <Errordesign>{formik.errors.username}</Errordesign> : null}
 					<Input
 						type="email"
 						placeholder="Email@abc.com"

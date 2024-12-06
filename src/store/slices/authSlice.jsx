@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 const initialState = { login: true, role: "admin" };
 const authSlice = createSlice({
 	name: "auth",
@@ -11,23 +12,31 @@ const authSlice = createSlice({
 	}
 })
 
-
-/* export const fetchStates = createAsyncThunk(
-	"auth/fetchStates",
-	async (payload, thunkApi) => {
+const logout = createAsyncThunk(
+	"auth/logout",
+	async (data, thunkApi) => {
 		try {
-			return { login: true, role: "admin" };
-			return thunkApi.fulfillWithValue((thunkApi.getState()));
+			let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/logout`, data, {
+				withCredentials: true,
+			});
+			/* console.log(res?.data); */
+			if (res?.data?.status == "ok") {
+				return thunkApi.fulfillWithValue(res?.data);
+			}
+			else {
+				return thunkApi.rejectWithValue(res?.data);
+			}
 		}
 		catch (err) {
 			return thunkApi.rejectWithValue({
 				status: "error",
-				message: "error while retrieving the states",
 				error: err,
-			})
+				message: "error occured while logout"
+			});
 		}
 	}
-) */
+)
 
 export const { setAuthDet } = authSlice.actions;
+export { logout };
 export default authSlice.reducer;

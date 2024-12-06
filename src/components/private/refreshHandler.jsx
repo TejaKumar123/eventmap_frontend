@@ -25,7 +25,7 @@ const RefreshHandler = () => {
 				}
 			}
 			catch (er) {
-				console.log(er);
+				/* console.log(er); */
 				dispatch(setAuthDet({ login: false, role: null }));
 				dispatch(setUser({}));
 			}

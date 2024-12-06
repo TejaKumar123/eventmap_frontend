@@ -1,6 +1,8 @@
 import Admin_content from "../components/major/admin/Admin_content"
 import Admin_navbar from "../components/major/admin/Admin_navbar"
 import Admin_sidebar from "../components/major/admin/Admin_sidebar"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const admin = () => {
 	return (
@@ -10,6 +12,7 @@ const admin = () => {
 				<Admin_sidebar />
 				<Admin_content />
 			</div>
+			<ToastContainer theme="dark" />
 		</div>
 	)
 }
