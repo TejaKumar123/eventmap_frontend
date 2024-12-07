@@ -6,6 +6,8 @@ import { useRef, useState } from "react";
 import { AddAPhoto, PhotoCamera } from "@mui/icons-material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+import { sessionInsert } from "../../../store/slices/sessionSlice";
 
 const Session_add = () => {
 
@@ -13,6 +15,7 @@ const Session_add = () => {
 	const [imageobj, setImageobj] = useState();
 	const imageRef = useRef();
 	const [imageerror, setImageerror] = useState();
+	const dispatch = useDispatch();
 
 	const handleFile = (event) => {
 		/* alert(JSON.stringify(event.currentTarget.files[0].type)) */
@@ -28,30 +31,43 @@ const Session_add = () => {
 		}
 	}
 
-	const handleSessionAdd = (data, file) => {
-		data["session-image"] = file;
-		toast.success("Successfully session added")
+	const handleSessionAdd = async (data, file) => {
+		/* data["session-image"] = file; */
+		try {
+			dispatch(sessionInsert(data)).then(action => {
+				console.log(action?.payload);
+				if (action?.payload?.status == "ok") {
+					toast.success("Successfully session added")
+					//reseting image and form
+					setImagename("");
+					setImageobj(false);
+					imageRef.current.value = "";
+					formik.resetForm();
+				}
+				else {
+					toast.error(action?.payload?.message);
+				}
+			});
+		}
+		catch (err) {
+			toast.error("something went wrong");
+		}
 
-		//reseting image and form 
-		setImagename("");
-		setImageobj(false);
-		imageRef.current.value = "";
-		formik.resetForm();
 
 	}
 
 	const validationSchema = Yup.object({
-		name: Yup.string().required("required"),
-		description: Yup.string().required("required"),
-		datetime: Yup.string().required("required"),
+		session_name: Yup.string().required("required"),
+		session_description: Yup.string().required("required"),
+		date_time: Yup.string().required("required"),
 		venue: Yup.string().required("required"),
 	})
 
 	const formik = useFormik({
 		initialValues: {
-			name: "",
-			description: "",
-			datetime: "",
+			session_name: "",
+			session_description: "",
+			date_time: "",
 			venue: "",
 		},
 		validationSchema,
@@ -86,13 +102,13 @@ const Session_add = () => {
 								type="text"
 								className="bg-[rgba(255,255,255,0.1)] w-full outline-none px-[10px] py-[10px] rounded-[4px]"
 								placeholder="Enter the session name"
-								name="name"
-								value={formik.values.name}
+								name="session_name"
+								value={formik.values.session_name}
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 
 							/>
-							{formik.touched.name && formik.errors.name ? <Errordesign>{formik.errors.name}</Errordesign> : null}
+							{formik.touched.session_name && formik.errors.session_name ? <Errordesign>{formik.errors.session_name}</Errordesign> : null}
 						</div>
 						<div className="w-[300px] h-auto flex flex-col items-start justify-start gap-[5px]">
 							<p className="text-[95%]">Session Description</p>
@@ -100,12 +116,12 @@ const Session_add = () => {
 								type="text"
 								className="bg-[rgba(255,255,255,0.1)] w-full outline-none px-[10px] py-[10px] rounded-[4px]"
 								placeholder="Enter the session Description"
-								name="description"
-								value={formik.values.description}
+								name="session_description"
+								value={formik.values.session_description}
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 							/>
-							{formik.touched.description && formik.errors.description ? <Errordesign>{formik.errors.description}</Errordesign> : null}
+							{formik.touched.session_description && formik.errors.session_description ? <Errordesign>{formik.errors.session_description}</Errordesign> : null}
 						</div>
 						<div className="w-[300px] h-auto flex flex-col items-start justify-start gap-[5px]">
 							<p className="text-[95%]">Session Venue</p>
@@ -126,12 +142,12 @@ const Session_add = () => {
 								type="datetime-local"
 								className="bg-[rgba(255,255,255,0.1)] w-full outline-none px-[10px] py-[10px] rounded-[4px] text-white"
 								placeholder="Enter the session Description"
-								name="datetime"
-								value={formik.values.datetime}
+								name="date_time"
+								value={formik.values.date_time}
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
 							/>
-							{formik.touched.datetime && formik.errors.datetime ? <Errordesign>{formik.errors.datetime}</Errordesign> : null}
+							{formik.touched.date_time && formik.errors.date_time ? <Errordesign>{formik.errors.date_time}</Errordesign> : null}
 						</div>
 						<div className="w-[300px] h-auto flex flex-col items-center justify-start gap-[5px]">
 							<input
@@ -143,7 +159,7 @@ const Session_add = () => {
 					</div>
 				</form>
 			</div>
-			<ToastContainer theme="dark" draggable autoClose={5000} />
+
 		</Templatediv1 >
 	)
 }

@@ -17,7 +17,7 @@ const Admin_navbar = () => {
 	const open = Boolean(anchorElement);
 	const dispatch = useDispatch();
 	const { user } = useSelector(state => state.user);
-	console.log(user);
+	/* console.log(user); */
 
 	const handleClose = () => {
 		setAnchorElement(null);

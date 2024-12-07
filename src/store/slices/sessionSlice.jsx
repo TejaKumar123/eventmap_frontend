@@ -32,7 +32,28 @@ const sessionFind = createAsyncThunk("session/find", async (data, thunkApi) => {
 	}
 })
 
-const sessionInsert = createAsyncThunk("session/find", async (data, thunkApi) => {
+const sessionInsert = createAsyncThunk("session/add", async (data, thunkApi) => {
+	try {
+		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_add`, data, { withCredentials: true });
+		/* console.log(res); */
+		if (res?.data?.status == "ok") {
+			return thunkApi.fulfillWithValue(res?.data);
+		}
+		else {
+			return thunkApi.rejectWithValue(res?.data);
+		}
+
+	}
+	catch (er) {
+		return thunkApi.rejectWithValue({
+			status: "error",
+			error: er,
+			message: "error while finding sessions"
+		})
+	}
+})
+
+const sessionUpdate = createAsyncThunk("session/update", async (data, thunkApi) => {
 	try {
 		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_view`, data, { withCredentials: true });
 		/* console.log(res); */
@@ -53,28 +74,7 @@ const sessionInsert = createAsyncThunk("session/find", async (data, thunkApi) =>
 	}
 })
 
-const sessionUpdate = createAsyncThunk("session/find", async (data, thunkApi) => {
-	try {
-		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_view`, data, { withCredentials: true });
-		/* console.log(res); */
-		if (res?.data?.status == "ok") {
-			return thunkApi.fulfillWithValue(res?.data);
-		}
-		else {
-			return thunkApi.rejectWithValue(res?.data);
-		}
-
-	}
-	catch (er) {
-		return thunkApi.rejectWithValue({
-			status: "error",
-			error: er,
-			message: "error while finding sessions"
-		})
-	}
-})
-
-const sessionDelete = createAsyncThunk("session/find", async (data, thunkApi) => {
+const sessionDelete = createAsyncThunk("session/delete", async (data, thunkApi) => {
 	try {
 		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_view`, data, { withCredentials: true });
 		/* console.log(res); */
