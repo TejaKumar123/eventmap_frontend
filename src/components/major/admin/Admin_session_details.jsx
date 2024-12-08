@@ -16,6 +16,7 @@ const Admin_session_details = () => {
 	const navigate = useNavigate();
 	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
 
+
 	const back = () => {
 		navigate(-1, { replace: true });
 	}
@@ -70,10 +71,10 @@ const Admin_session_details = () => {
 					<img src={session?.["session_image"] || "/temp.jpeg"} className="object-cover object-top w-full rounded-[10px]" />
 				</div>
 				<div className="w-[55%] h-auto flex flex-row items-start justify-start flex-wrap gap-[10px]">
-					<Session_detail_box text1={session?.["email"]} text2={"Creator"} />
-					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss")} text2={"session-Time"} />
+					<Session_detail_box text1={session?.creator?.username} text2={"Creator"} />
+					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss A")} text2={"session-Time"} />
 					<Session_detail_box text1={moment(session?.["date_time"]).format("DD-MM-YYYY")} text2={"session-Date"} />
-					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss")} text2={"created_on"} />
+					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss A")} text2={"created_on"} />
 					<Session_detail_box text1={session?.["status"]} text2={"status"} />
 					<Session_detail_box text1={session?.["acceptance"]} text2={"acceptance"} />
 					<Session_detail_box text1={session?.["session_name"]} text2={"session-name"} />

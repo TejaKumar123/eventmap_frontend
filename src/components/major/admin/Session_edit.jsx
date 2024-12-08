@@ -27,7 +27,7 @@ const Session_edit = () => {
 		initialValues: {
 			session_name: sessionData["session_name"],
 			session_description: sessionData["session_description"],
-			date_time: moment(sessionData["date_time"]).format("YYYY-MM-DD") + "T" + moment(sessionData["date_time"]).format("hh:mm:ss"),
+			date_time: moment(sessionData["date_time"]).format("YYYY-MM-DD") + "T" + moment(sessionData["date_time"]).format("HH:mm:ss"),
 			venue: sessionData["venue"],
 		},
 		validationSchema,
