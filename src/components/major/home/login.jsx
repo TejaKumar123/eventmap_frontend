@@ -47,14 +47,16 @@ const login = () => {
 		setLoading(false);
 	}
 
-	/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email', */
-	/* accessType: 'offline',
+	/* scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email',
+	accessType: 'offline',
 	prompt: 'consent',
-	flow: "auth-code" */ /// flow:"auth-code gives only code not access-token so we we have to remove it to get ccess-token"
+	flow: "auth-code" */
+	/// flow:"auth-code gives only code not access-token so we we have to remove it to get ccess-token"
 
 	const login = useGoogleLogin({
 		onSuccess: (res) => handleLogin(res),
 		onError: (er) => console.log(er),
+		/* scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email', */
 		flow: "auth-code"
 	})
 
