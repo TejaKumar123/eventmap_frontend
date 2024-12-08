@@ -7,7 +7,6 @@ import { v4 as uuid } from "uuid"
 const Session_view = () => {
 	const dispatch = useDispatch();
 	const [sessionData, setSessionData] = useState([]);
-	const empty = Boolean(sessionData);
 
 	const fetchSessions = async () => {
 		let criteria = { acceptance: "accepted" };
@@ -24,7 +23,7 @@ const Session_view = () => {
 
 	return (
 		<div className="w-fit h-auto flex flex-row items-start justify-start flex-wrap gap-[15px] m-auto p-[10px]">
-			{!empty
+			{sessionData.length != 0
 				?
 				sessionData.map((data) => {
 					if (data?.value && data?.value?.creator && data?.status == "fulfilled" && data?.value?.["acceptance"] == "accepted") {

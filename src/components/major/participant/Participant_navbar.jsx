@@ -26,7 +26,7 @@ const Participant_navbar = () => {
 
 	const UserLogout = async () => {
 		dispatch(logout({})).then(action => {
-			console.log(action.payload.status);
+			/* console.log(action.payload.status); */
 			if (action?.payload?.status == "ok") {
 				dispatch(setAuthDet({ login: false, role: null }));
 				dispatch(setUser({}));
