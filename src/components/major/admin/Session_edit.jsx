@@ -5,15 +5,36 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Errordesign from "../../basic/home/errordesign";
 import moment from "moment";
+import { useDispatch } from "react-redux";
+import { sessionUpdate } from "../../../store/slices/sessionSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Session_edit = () => {
 
 	const location = useLocation();
 	const { sessionData } = location.state || {};
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const back = () => {
 		navigate(-1);
+	}
+
+	const handleSessionEdit = async (data) => {
+		let criteria = { session_id: sessionData?.["session_id"] };
+		let updatedInfo = data;
+		dispatch(sessionUpdate({ criteria, updatedInfo })).then(action => {
+			/* console.log(action); */
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				navigate("/admin/sessions/requests");
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+
 	}
 
 	const validationSchema = Yup.object({
@@ -36,9 +57,9 @@ const Session_edit = () => {
 				setImageerror("please select image");
 				return;
 			}
-			setImageerror("");
-			handleSessionAdd(values, imageobj); */
-			alert(JSON.stringify(values));
+			setImageerror("");*/
+			let data = JSON.parse(JSON.stringify(values));
+			handleSessionEdit(values);
 		},
 	})
 

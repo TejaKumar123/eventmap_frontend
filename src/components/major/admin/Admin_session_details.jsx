@@ -8,14 +8,17 @@ import moment from "moment"
 import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data";
 import Admin_feedback from "../../basic/admin/Admin_feedback"
+import { useDispatch } from "react-redux"
+import { sessionUpdate } from "../../../store/slices/sessionSlice"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 
 const Admin_session_details = () => {
-
 
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
-
+	const dispatch = useDispatch();
 
 	const back = () => {
 		navigate(-1, { replace: true });
@@ -26,11 +29,34 @@ const Admin_session_details = () => {
 	}
 
 	const accept = () => {
-		alert("accepted");
+		let criteria = { session_id: session?.["session_id"] };
+		let updatedInfo = { acceptance: "accepted" };
+		dispatch(sessionUpdate({ criteria, updatedInfo })).then(action => {
+			/* console.log(action); */
+			if (action?.payload?.status == "ok") {
+				setSession((state) => { return { ...state, acceptance: "accepted" } });
+				toast.success(action?.payload?.message);
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
 	}
 
 	const reject = () => {
-		alert("rejected");
+		let criteria = { session_id: session?.["session_id"] };
+		let updatedInfo = { acceptance: "rejected" };
+		dispatch(sessionUpdate({ criteria, updatedInfo })).then(action => {
+			/* console.log(action); */
+			if (action?.payload?.status == "ok") {
+				setSession({ ...session, acceptance: "rejected" });
+				toast.success("message rejected");
+			}
+			else {
+				toast.error("message accepted");
+			}
+		})
+
 	}
 
 	const handleFeedback = async (data) => {
