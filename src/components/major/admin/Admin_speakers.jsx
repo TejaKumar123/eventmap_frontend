@@ -7,20 +7,31 @@ import { useDispatch } from "react-redux"
 import { setHeading } from "../../../store/slices/otherSlice"
 import { userData } from "../../../assets/data/data"
 import moment from "moment"
+import { findUser } from "../../../store/slices/userSlice"
+import { v4 as uuid } from "uuid"
 
 const Admin_speakers = () => {
 
 	const dispatch = useDispatch();
 
+	const fetchSpeakers = async () => {
+		let criteria = { role: "speaker" };
+		let projection = {};
+		dispatch(findUser({ criteria, projection })).then(action => {
+			console.log(action?.payload);
+		})
+	}
+
 	useEffect(() => {
-		dispatch(setHeading("Speakers"))
+		dispatch(setHeading("Speakers"));
+		fetchSpeakers();
 	}, [])
 
 	return (
 		<>
 			<Templatediv>
-				<table className="w-full">
-					<tr className="" key={"head"}>
+				<table className="w-full" key={uuid()}>
+					<tr className="" key={uuid()}>
 						<td className="p-[5px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]"><Person /></td>
 						<td className="p-[2px_0px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]">Name</td>
 						{/* <td className="p-[2px_0px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]">Username</td> */}

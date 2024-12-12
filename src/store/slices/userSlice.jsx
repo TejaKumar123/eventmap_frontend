@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-
+import axios from "axios";
 
 const userSlice = createSlice({
 	name: "user",
@@ -27,7 +27,8 @@ const findUser = createAsyncThunk("user/find", async (data, thunkApi) => {
 	catch (err) {
 		return thunkApi.rejectWithValue({
 			status: "error",
-			message: "error while finding user through thunk"
+			message: "error while finding user through thunk",
+			error: err,
 		})
 	}
 })
@@ -46,7 +47,8 @@ const deleteUser = createAsyncThunk("user/delete", async (data, thunkApi) => {
 	catch (err) {
 		return thunkApi.rejectWithValue({
 			status: "error",
-			message: "error while removing user through thunk"
+			message: "error while removing user through thunk",
+			error: err,
 		})
 	}
 })

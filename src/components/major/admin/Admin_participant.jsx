@@ -7,20 +7,31 @@ import { useDispatch } from "react-redux"
 import { setHeading } from "../../../store/slices/otherSlice"
 import { userData } from "../../../assets/data/data"
 import moment from "moment"
+import { v4 as uuid } from "uuid"
+import { findUser } from "../../../store/slices/userSlice"
 
 const Admin_participant = () => {
 
 	const dispatch = useDispatch();
 
+	const fetchParticipants = async () => {
+		let criteria = { role: "participant" };
+		let projection = {};
+		dispatch(findUser({ criteria, projection })).then(action => {
+			console.log(action?.payload);
+		})
+	}
+
 	useEffect(() => {
-		dispatch(setHeading("Participants"))
+		dispatch(setHeading("Participants"));
+		fetchParticipants();
 	}, [])
 
 	return (
 		<>
 			<Templatediv>
-				<table className="w-full">
-					<tr className="text-[95%] sticky top-[-10px] bg-[#1b1342]" key={"head"}>
+				<table className="w-full" key={uuid()}>
+					<tr className="text-[95%] sticky top-[-10px] bg-[#1b1342]" key={uuid()}>
 						<td className="p-[5px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]"><Person /></td>
 						<td className="p-[2px_0px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]">Name</td>
 						{/* <td className="p-[2px_0px] text-center font-bold border-r-[rgba(255,255,255,0.3)] border-r-[1px]">Username</td> */}
