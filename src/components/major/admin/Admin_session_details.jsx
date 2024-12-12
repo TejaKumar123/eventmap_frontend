@@ -1,7 +1,7 @@
 import Templatediv1 from "../../basic/other/Templatediv1"
 import { sessionData } from "../../../assets/data/data"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
-import { ArrowBack, Edit, Send } from "@mui/icons-material"
+import { ArrowBack, Delete, Edit, Send } from "@mui/icons-material"
 import { useEffect, useState } from "react"
 import Session_detail_box from "../../basic/admin/Session_detail_box"
 import moment from "moment"
@@ -9,7 +9,7 @@ import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data";
 import Admin_feedback from "../../basic/admin/Admin_feedback"
 import { useDispatch } from "react-redux"
-import { sessionUpdate } from "../../../store/slices/sessionSlice"
+import { sessionDelete, sessionUpdate } from "../../../store/slices/sessionSlice"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
 
@@ -26,6 +26,20 @@ const Admin_session_details = () => {
 
 	const editDetail = () => {
 		navigate("/admin/sessions/edit", { state: { sessionData: session } });
+	}
+
+	const deleteSession = async () => {
+		let data = { session_id: session?.["session_id"] };
+		dispatch(sessionDelete(data)).then(action => {
+			/* console.log(action); */
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				back();
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
 	}
 
 	const accept = () => {
@@ -87,6 +101,9 @@ const Admin_session_details = () => {
 			<div className="w-full h-auto flex flex-row items-center justify-between sticky top-[-10px] mb-[20px] bg-[#1b1342] py-[10px] px-[10px]">
 				<div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={back} title="BACK">
 					<ArrowBack />
+				</div>
+				<div className="w-fit p-[5px] border-[2px] border-[rgba(255,255,255,1)] flex flex-row items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white rounded-[100%]" onClick={deleteSession}>
+					<Delete />
 				</div>
 				{session?.["acceptance"] != "rejected" && session?.["status"] != 1 && <div className="w-fit rounded-[100%] px-[5px] py-[5px] border-[rgba(255,255,255,1)] border-[2px] flex items-center justify-center cursor-pointer opacity-[0.5] transition-[0.1s] hover:opacity-[1] text-white" onClick={editDetail} title="EDIT">
 					<Edit />

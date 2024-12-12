@@ -76,7 +76,7 @@ const sessionUpdate = createAsyncThunk("session/update", async (data, thunkApi) 
 
 const sessionDelete = createAsyncThunk("session/delete", async (data, thunkApi) => {
 	try {
-		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_view`, data, { withCredentials: true });
+		let res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/session/session_delete`, data, { withCredentials: true });
 		/* console.log(res); */
 		if (res?.data?.status == "ok") {
 			return thunkApi.fulfillWithValue(res?.data);

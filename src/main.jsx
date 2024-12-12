@@ -13,7 +13,7 @@ root.render(
 	<Provider store={store}>
 		<PersistGate loading={null} persistor={persister}>
 			<BrowserRouter>
-				<GoogleOAuthProvider clientId="41300727469-48r94odbbvo9ahd572dtc7kcq95q2lt0.apps.googleusercontent.com">
+				<GoogleOAuthProvider clientId={`${import.meta.env.VITE_CLIENT_ID}`} >
 					<App />
 				</GoogleOAuthProvider>
 			</BrowserRouter>
