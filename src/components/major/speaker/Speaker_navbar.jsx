@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout, setAuthDet } from "../../../store/slices/authSlice";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { setUser } from "../../../store/slices/userSlice";
 
 
 

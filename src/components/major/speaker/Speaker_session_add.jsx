@@ -6,6 +6,8 @@ import { AddAPhoto, ArrowBack, PhotoCamera } from "@mui/icons-material";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { sessionInsert } from "../../../store/slices/sessionSlice";
 
 const Speaker_session_add = () => {
 
@@ -14,6 +16,7 @@ const Speaker_session_add = () => {
 	const imageRef = useRef();
 	const [imageerror, setImageerror] = useState();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const back = () => {
 		navigate(-1, { replace: true })
@@ -34,14 +37,20 @@ const Speaker_session_add = () => {
 	}
 
 	const handleSpeakerSessionAdd = (data, file) => {
-		data["session_image"] = file;
-		toast.success("Successfully session added")
-
-		//reseting image and form 
-		setImagename("");
-		setImageobj(false);
-		imageRef.current.value = "";
-		formik.resetForm();
+		/* data["session_image"] = file; */
+		dispatch(sessionInsert(data)).then(action => {
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				//reseting image and form 
+				setImagename("");
+				setImageobj(false);
+				imageRef.current.value = "";
+				formik.resetForm();
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
 
 	}
 
