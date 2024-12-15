@@ -7,7 +7,7 @@ import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data"
 import Participant_feedback from "../../basic/participant/Participant_feedback"
 import { useDispatch, useSelector } from "react-redux"
-import { registrationAdd, registrationView } from "../../../store/slices/registrationSlice"
+import { registrationAdd, registrationDelete, registrationView } from "../../../store/slices/registrationSlice"
 import { toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,6 +20,7 @@ const Participant_session_details = () => {
 	const dispatch = useDispatch();
 	const [registered, setRegistered] = useState(null);
 	const { user } = useSelector(state => state.user);
+	const [registrationData, setRegistrationdata] = useState({});
 
 	const back = () => {
 		navigate(-1, { replace: true });
@@ -40,11 +41,12 @@ const Participant_session_details = () => {
 
 	const checkRegistration = async () => {
 		let criteria = { session_id: session?.["session_id"], email: user.email };
-		let projection = { session_id: true };
+		let projection = { session_id: true, registration_id: true };
 		dispatch(registrationView({ criteria, projection })).then(action => {
 			/* console.log(action?.payload); */
 			if (action?.payload?.status == "ok" && action?.payload?.data?.length != 0) {
 				setRegistered(true);
+				setRegistrationdata(action?.payload?.data?.[0] || {});
 			}
 			else if (action?.payload?.status == "error") {
 				setRegistered(null);
@@ -52,6 +54,20 @@ const Participant_session_details = () => {
 			}
 			else {
 				setRegistered(false);
+			}
+		})
+	}
+
+	const cancelRegistration = async () => {
+		let criteria = { email: user.email, session_id: session?.["session_id"] };
+		dispatch(registrationDelete({ criteria, registration_id: registrationData?.registration_id })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success("registration cancelled successfully");
+				checkRegistration();
+			}
+			else {
+				toast.error("error occured while cancelling registration");
 			}
 		})
 	}
@@ -116,6 +132,12 @@ const Participant_session_details = () => {
 					{registered == null &&
 						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
 							<button className="bg-yellow-700 px-[20px] py-[2px] rounded-[20px] text-[120%]">Status pending...</button>
+						</div>
+
+					}
+					{registered == true && session?.["status"] == "0" && session?.["acceptance"] == "accepted" &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-red-700 px-[20px] py-[2px] rounded-[20px] text-[120%]" onClick={cancelRegistration}>Cancel Registration</button>
 						</div>
 
 					}

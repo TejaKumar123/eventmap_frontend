@@ -29,6 +29,7 @@ const Participant_session_view = () => {
 
 	return (
 		<div className="w-full h-auto px-[15px] py-[15px] mt-[10px]">
+			<p className="text-[150%] mb-[30px]">Sessions</p>
 			{sessionData.length != 0 ?
 				<div className="w-full h-auto flex flex-row items-start justify-start flex-wrap gap-[10px]">
 					{
