@@ -71,7 +71,7 @@ const Admin_speakers = () => {
 						})}
 					</table>
 					:
-					<p className="text-center opacity-[0.5] text-[150%]">There are no participants in eventmap</p>
+					<p className="text-center opacity-[0.5] text-[150%]">There are no speakers in eventmap</p>
 				}
 			</Templatediv>
 		</>

@@ -5,11 +5,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const participant = () => {
 	return (
-		<div className="w-[100%] h-auto text-[white]">
-			<Participant_navbar />
-			<Participant_content />
+		<>
+			<div className="w-[100%] h-auto text-[white]">
+				<Participant_navbar />
+				<Participant_content />
+			</div>
 			<ToastContainer theme="dark" />
-		</div>
+		</>
 	)
 }
 

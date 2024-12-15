@@ -39,7 +39,7 @@ const Speaker_session_card = ({ cardData }) => {
 				</div>
 				<div className="w-full h-[40%] p-[5px] pl-[10px] pb-[10px] flex flex-col items-start justify-between overflow-hidden">
 					<p className="overflow-hidden whitespace-nowrap text-ellipsis w-full font-bold text-[97%]">{cardData["session_name"]}</p>
-					<p className="text-[95%]">{moment(cardData["date_time"]).format("DD-MM-YYYY")}  {moment(cardData["date_time"]).format("hh:mm:ss")} </p>
+					<p className="text-[95%]">{moment(cardData["date_time"]).format("DD-MM-YYYY")}  {moment(cardData["date_time"]).format("hh:mm:ss A")} </p>
 					<p className="bg-[#277c27] w-fit p-[1px] px-[10px] rounded-[20px] text-[95%]">{cardData?.creator?.["username"]}</p>
 					<p className="w-fit p-[1px] px-[10px] rounded-[20px] text-[95%]" style={{ backgroundColor: cardData["acceptance"] == "accepted" ? "#277c27" : cardData["acceptance"] == "pending" ? "orange" : "red" }}>{cardData["acceptance"]}</p>
 				</div>

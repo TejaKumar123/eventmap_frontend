@@ -6,6 +6,10 @@ import moment from "moment"
 import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data"
 import Participant_feedback from "../../basic/participant/Participant_feedback"
+import { useDispatch, useSelector } from "react-redux"
+import { registrationAdd, registrationView } from "../../../store/slices/registrationSlice"
+import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 const Participant_session_details = () => {
 
@@ -13,13 +17,43 @@ const Participant_session_details = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
+	const dispatch = useDispatch();
+	const [registered, setRegistered] = useState(null);
+	const { user } = useSelector(state => state.user);
 
 	const back = () => {
 		navigate(-1, { replace: true });
 	}
 
-	const registerSession = () => {
-		alert("registered");
+	const registerSession = async () => {
+		dispatch(registrationAdd({ session_id: session?.["session_id"] })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success("session successfully registered");
+				checkRegistration();
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+	}
+
+	const checkRegistration = async () => {
+		let criteria = { session_id: session?.["session_id"], email: user.email };
+		let projection = { session_id: true };
+		dispatch(registrationView({ criteria, projection })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok" && action?.payload?.data?.length != 0) {
+				setRegistered(true);
+			}
+			else if (action?.payload?.status == "error") {
+				setRegistered(null);
+				toast.error("error while checking registration status");
+			}
+			else {
+				setRegistered(false);
+			}
+		})
 	}
 
 	const handleFeedback = async (data) => {
@@ -43,6 +77,7 @@ const Participant_session_details = () => {
 			navigate("/participant/sessions/view");
 			/* alert(stateSession); */
 		}
+		checkRegistration();
 	}, [])
 
 	return (
@@ -57,20 +92,32 @@ const Participant_session_details = () => {
 					<img src={session?.["session_image"] || "/temp.jpeg"} className="object-cover object-top w-full rounded-[10px]" />
 				</div>
 				<div className="w-[55%] h-auto flex flex-row items-start justify-start flex-wrap gap-[10px]">
-					<Session_detail_box text1={session?.["email"]} text2={"Creator"} />
-					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss")} text2={"session-Time"} />
+					<Session_detail_box text1={session?.creator?.["username"]} text2={"Creator"} />
+					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss A")} text2={"session-Time"} />
 					<Session_detail_box text1={moment(session?.["date_time"]).format("DD-MM-YYYY")} text2={"session-Date"} />
-					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss")} text2={"created_on"} />
+					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss A")} text2={"created_on"} />
 					<Session_detail_box text1={session?.["status"]} text2={"status"} />
 					<Session_detail_box text1={session?.["acceptance"]} text2={"acceptance"} />
 					<Session_detail_box text1={session?.["session_name"]} text2={"session-name"} />
 					<Session_detail_box text1={session?.["session_description"]} text2={"session-Description"} />
 					<Session_detail_box text1={session?.["venue"]} text2={"venue"} />
 
-					{session?.["status"] == 0 && session?.["acceptance"] == "accepted" &&
+					{registered == false && session?.["status"] == 0 && session?.["acceptance"] == "accepted" &&
 						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
 							<button className="bg-blue-700 px-[20px] py-[2px] rounded-[20px] text-[120%]" onClick={registerSession}>Register</button>
 						</div>
+					}
+					{registered == true &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-green-700 px-[20px] py-[2px] rounded-[20px] text-[120%]">Registered</button>
+						</div>
+
+					}
+					{registered == null &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-yellow-700 px-[20px] py-[2px] rounded-[20px] text-[120%]">Status pending...</button>
+						</div>
+
 					}
 				</div>
 			</div>

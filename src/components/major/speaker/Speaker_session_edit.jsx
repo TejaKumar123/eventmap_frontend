@@ -4,19 +4,35 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Errordesign from "../../basic/home/errordesign";
 import moment from "moment";
+import { sessionUpdate } from "../../../store/slices/sessionSlice";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux";
+
 
 const Speaker_session_edit = () => {
 
 	const location = useLocation();
 	const { sessionData } = location.state || {};
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const back = () => {
 		navigate(-1);
 	}
 
 	const handleSessionEdit = (data) => {
-		alert(JSON.stringify(data));
+		let criteria = { session_id: sessionData["session_id"] };
+		let updatedInfo = data;
+		dispatch(sessionUpdate({ criteria, updatedInfo })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
 	}
 
 	const validationSchema = Yup.object({
@@ -30,7 +46,7 @@ const Speaker_session_edit = () => {
 		initialValues: {
 			session_name: sessionData["session_name"],
 			session_description: sessionData["session_description"],
-			date_time: moment(sessionData["date_time"]).format("YYYY-MM-DD") + "T" + moment(sessionData["date_time"]).format("hh:mm:ss"),
+			date_time: moment(sessionData["date_time"]).format("YYYY-MM-DD") + "T" + moment(sessionData["date_time"]).format("HH:mm:ss"),
 			venue: sessionData["venue"],
 		},
 		validationSchema,

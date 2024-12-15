@@ -6,6 +6,11 @@ import moment from "moment"
 import { useFormik } from "formik"
 import { feedbackData } from "../../../assets/data/data"
 import Speaker_feedback from "../../basic/speaker/Speaker_feedback"
+import { sessionDelete } from "../../../store/slices/sessionSlice"
+import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch } from "react-redux"
+
 
 const Speaker_session_details = () => {
 
@@ -13,6 +18,7 @@ const Speaker_session_details = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
+	const dispatch = useDispatch();
 
 	const back = () => {
 		navigate(-1, { replace: true });
@@ -23,7 +29,17 @@ const Speaker_session_details = () => {
 	}
 
 	const CancelRequest = () => {
-		alert("request cancel");
+		let criteria = {};
+		dispatch(sessionDelete({ session_id: session["session_id"] })).then(action => {
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				navigate(-1);
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+
 	}
 
 	const handleFeedback = async (data) => {
@@ -66,9 +82,9 @@ const Speaker_session_details = () => {
 				</div>
 				<div className="w-[55%] h-auto flex flex-row items-start justify-start flex-wrap gap-[10px]">
 					<Session_detail_box text1={session?.["email"]} text2={"Creator"} />
-					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss")} text2={"session-Time"} />
+					<Session_detail_box text1={moment(session?.["date_time"]).format("hh:mm:ss A")} text2={"session-Time"} />
 					<Session_detail_box text1={moment(session?.["date_time"]).format("DD-MM-YYYY")} text2={"session-Date"} />
-					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss")} text2={"created_on"} />
+					<Session_detail_box text1={moment(session?.["created_on"]).format("DD-MM-YYYY hh:mm:ss A")} text2={"created_on"} />
 					<Session_detail_box text1={session?.["status"]} text2={"status"} />
 					<Session_detail_box text1={session?.["acceptance"]} text2={"acceptance"} />
 					<Session_detail_box text1={session?.["session_name"]} text2={"session-name"} />

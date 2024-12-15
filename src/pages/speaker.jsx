@@ -1,7 +1,7 @@
 import Speaker_navigation from "../components/major/speaker/Speaker_navigation"
 import Speaker_navbar from "../components/major/speaker/Speaker_navbar"
 import Speaker_content from "../components/major/speaker/Speaker_content"
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const speaker = () => {
