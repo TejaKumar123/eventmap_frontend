@@ -4,23 +4,24 @@ import { useState, useEffect } from "react"
 import Session_detail_box from "../../basic/admin/Session_detail_box"
 import moment from "moment"
 import { useFormik } from "formik"
-import { feedbackData } from "../../../assets/data/data"
 import Participant_feedback from "../../basic/participant/Participant_feedback"
 import { useDispatch, useSelector } from "react-redux"
 import { registrationAdd, registrationDelete, registrationView } from "../../../store/slices/registrationSlice"
 import { toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
+import { feedbackAdd, feedbackView } from "../../../store/slices/feedbackSlice"
 
 const Participant_session_details = () => {
 
 
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
+	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing
 	const dispatch = useDispatch();
 	const [registered, setRegistered] = useState(null);
 	const { user } = useSelector(state => state.user);
 	const [registrationData, setRegistrationdata] = useState({});
+	const [feedbackData, setFeedbackData] = useState([]);
 
 	const back = () => {
 		navigate(-1, { replace: true });
@@ -72,8 +73,34 @@ const Participant_session_details = () => {
 		})
 	}
 
+	const getFeedbacks = async () => {
+		let criteria = { session_id: session?.["session_id"] };
+		let projection = {};
+		dispatch(feedbackView({ criteria, projection })).then(action => {
+			console.log(action?.payload);
+			if (action?.payload?.status == "ok") {
+				setFeedbackData(action?.payload?.data);
+				/* toast.success("feedbacks fetched"); */
+			}
+			else {
+				console.log(action?.payload?.message);
+			}
+		})
+	}
+
 	const handleFeedback = async (data) => {
-		alert(JSON.stringify(data));
+		dispatch(feedbackAdd(data)).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				getFeedbacks();
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+		formik.resetForm();
+
 	}
 
 	const formik = useFormik({
@@ -92,6 +119,9 @@ const Participant_session_details = () => {
 		if (!stateSession?.session) {
 			navigate("/participant/sessions/view");
 			/* alert(stateSession); */
+		}
+		if (stateSession?.session?.status == 1 && stateSession?.session?.acceptance == "accepted") {
+			getFeedbacks();
 		}
 		checkRegistration();
 	}, [])
@@ -150,9 +180,11 @@ const Participant_session_details = () => {
 					<div className="w-full h-[400px] overflow-y-auto px-[10px]">
 						{
 							feedbackData.map((data) => {
-								if (data?.["session_id"] != session?.["session_id"]) {
-									return <Participant_feedback feedback={data} />
+								if (data?.status == "fulfilled" && data?.value?.["session_id"] == session?.["session_id"]) {
+
+									return <Participant_feedback feedback={data?.value} />
 								}
+
 							})
 						}
 					</div>
