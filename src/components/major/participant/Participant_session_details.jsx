@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { registrationAdd, registrationDelete, registrationView } from "../../../store/slices/registrationSlice"
 import { toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
-import { feedbackAdd, feedbackView } from "../../../store/slices/feedbackSlice"
+import { feedbackAdd, feedbackDelete, feedbackUpdate, feedbackView } from "../../../store/slices/feedbackSlice"
 
 const Participant_session_details = () => {
 
@@ -77,7 +77,7 @@ const Participant_session_details = () => {
 		let criteria = { session_id: session?.["session_id"] };
 		let projection = {};
 		dispatch(feedbackView({ criteria, projection })).then(action => {
-			console.log(action?.payload);
+			/* console.log(action?.payload); */
 			if (action?.payload?.status == "ok") {
 				setFeedbackData(action?.payload?.data);
 				/* toast.success("feedbacks fetched"); */
@@ -101,6 +101,35 @@ const Participant_session_details = () => {
 		})
 		formik.resetForm();
 
+	}
+
+	const deleteFeedback = async (feedback) => {
+		let criteria = { feedback_id: feedback.feedback_id };
+		dispatch(feedbackDelete({ criteria })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				getFeedbacks();
+				toast.success("feedback deleted successfully");
+			}
+			else {
+				toast.error("error while deleting feedback");
+			}
+
+		})
+	}
+
+	const editFeedback = async (data) => {
+		/* console.log(data); */
+		dispatch(feedbackUpdate(data)).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				getFeedbacks();
+				toast.success("feedback updated");
+			}
+			else {
+				toast.error("error occur while updating the feedbacl")
+			}
+		})
 	}
 
 	const formik = useFormik({
@@ -182,7 +211,7 @@ const Participant_session_details = () => {
 							feedbackData.map((data) => {
 								if (data?.status == "fulfilled" && data?.value?.["session_id"] == session?.["session_id"]) {
 
-									return <Participant_feedback feedback={data?.value} />
+									return <Participant_feedback feedback={data?.value} edit={editFeedback} deletef={deleteFeedback} />
 								}
 
 							})
