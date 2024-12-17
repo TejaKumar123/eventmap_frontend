@@ -225,24 +225,25 @@ const Participant_session_details = () => {
 							})
 						}
 					</div>
-					<form className="w-[80%] h-[60px] mt-[10px] flex flex-row items-center justify-around px-[10px] py-[5px] m-auto relative" onSubmit={formik.handleSubmit}>
-						<input
-							className="w-[100%] h-[100%] rounded-[25px] bg-[#1b1342] px-[20px] outline-none pr-[100px]"
-							placeholder="Give feedback here..."
-							name="feedback"
-							maxLength={200}
-							value={formik.values.feedback}
-							onChange={formik.handleChange}
-							onBlur={formik.handleBlur}
-							required
-						/>
-						<button
-							className="rounded-[50%] hyphens-auto bg-[#1b1342] p-[10px] pl-[13px] cursor-pointer absolute right-[10px]"
-							type="submit"
-						>
-							<Send />
-						</button>
-					</form>
+					{registered == true &&
+						<form className="w-[80%] h-[60px] mt-[10px] flex flex-row items-center justify-around px-[10px] py-[5px] m-auto relative" onSubmit={formik.handleSubmit}>
+							<input
+								className="w-[100%] h-[100%] rounded-[25px] bg-[#1b1342] px-[20px] outline-none pr-[100px]"
+								placeholder="Give feedback here..."
+								name="feedback"
+								maxLength={200}
+								value={formik.values.feedback}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								required
+							/>
+							<button
+								className="rounded-[50%] hyphens-auto bg-[#1b1342] p-[10px] pl-[13px] cursor-pointer absolute right-[10px]"
+								type="submit"
+							>
+								<Send />
+							</button>
+						</form>}
 				</div>
 
 

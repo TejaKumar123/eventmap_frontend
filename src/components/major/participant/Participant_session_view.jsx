@@ -48,4 +48,4 @@ const Participant_session_view = () => {
 	)
 }
 
-export default Participant_session_view
+export default Participant_session_view;
