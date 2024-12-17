@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux"
 import { sessionDelete, sessionUpdate } from "../../../store/slices/sessionSlice"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css";
+import { feedbackAdd, feedbackDelete, feedbackUpdate, feedbackView } from "../../../store/slices/feedbackSlice"
 
 const Admin_session_details = () => {
 
@@ -19,6 +20,7 @@ const Admin_session_details = () => {
 	const navigate = useNavigate();
 	const [session, setSession] = useState(location.state?.session || {}); // getting session data through state in routing 
 	const dispatch = useDispatch();
+	const [feedbackData, setFeedbackData] = useState([]);
 
 	const back = () => {
 		navigate(-1, { replace: true });
@@ -29,8 +31,8 @@ const Admin_session_details = () => {
 	}
 
 	const deleteSession = async () => {
-		let data = { session_id: session?.["session_id"] };
-		dispatch(sessionDelete(data)).then(action => {
+		let criteria = { session_id: session?.["session_id"] };
+		dispatch(sessionDelete({ criteria })).then(action => {
 			/* console.log(action); */
 			if (action?.payload?.status == "ok") {
 				toast.success(action?.payload?.message);
@@ -73,8 +75,78 @@ const Admin_session_details = () => {
 
 	}
 
+	const completeSession = async () => {
+		let criteria = { session_id: session.session_id };
+		let updatedInfo = { status: 1 };
+		dispatch(sessionUpdate({ criteria, updatedInfo })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success("session completed");
+				setSession({ ...session, status: 1 });
+			}
+			else {
+				toast.error("error occured");
+			}
+		})
+	}
+
+	const getFeedbacks = async () => {
+		let criteria = { session_id: session?.["session_id"] };
+		let projection = {};
+		dispatch(feedbackView({ criteria, projection })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				setFeedbackData(action?.payload?.data);
+				/* toast.success("feedbacks fetched"); */
+			}
+			else {
+				console.log(action?.payload?.message);
+			}
+		})
+	}
+
 	const handleFeedback = async (data) => {
-		alert(JSON.stringify(data));
+		dispatch(feedbackAdd(data)).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success(action?.payload?.message);
+				getFeedbacks();
+			}
+			else {
+				toast.error(action?.payload?.message);
+			}
+		})
+		formik.resetForm();
+
+	}
+
+	const deleteFeedback = async (feedback) => {
+		let criteria = { feedback_id: feedback.feedback_id };
+		dispatch(feedbackDelete({ criteria })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				getFeedbacks();
+				toast.success("feedback deleted successfully");
+			}
+			else {
+				toast.error("error while deleting feedback");
+			}
+
+		})
+	}
+
+	const editFeedback = async (data) => {
+		/* console.log(data); */
+		dispatch(feedbackUpdate(data)).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				getFeedbacks();
+				toast.success("feedback updated");
+			}
+			else {
+				toast.error("error occur while updating the feedbacl")
+			}
+		})
 	}
 
 	const formik = useFormik({
@@ -93,6 +165,9 @@ const Admin_session_details = () => {
 		if (!stateSession?.session) {
 			navigate("/admin/sessions/view");
 			/* alert(stateSession); */
+		}
+		if (stateSession?.session?.status == 1 && stateSession?.session?.acceptance == "accepted") {
+			getFeedbacks();
 		}
 	}, [])
 
@@ -129,6 +204,18 @@ const Admin_session_details = () => {
 							<button className="bg-red-700 px-[20px] py-[1px] rounded-[20px]" onClick={reject}>Reject</button>
 						</div>
 					}
+					{session?.["status"] == 1 && session?.["acceptance"] == "accepted" &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-green-700 px-[20px] py-[1px] rounded-[20px]">
+								Session completed
+							</button>
+						</div>
+					}
+					{session?.["status"] == 0 && session?.["acceptance"] == "accepted" &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+							<button className="bg-green-700 px-[20px] py-[1px] rounded-[20px]" onClick={completeSession}>Complete</button>
+						</div>
+					}
 				</div>
 			</div>
 			{
@@ -138,9 +225,11 @@ const Admin_session_details = () => {
 					<div className="w-full h-[250px] overflow-y-auto px-[10px]">
 						{
 							feedbackData.map((data) => {
-								if (data?.["session_id"] != session?.["session_id"]) {
-									return <Admin_feedback feedback={data} />
+								if (data?.status == "fulfilled" && data?.value?.["session_id"] == session?.["session_id"]) {
+
+									return <Admin_feedback feedback={data?.value} edit={editFeedback} deletef={deleteFeedback} />
 								}
+
 							})
 						}
 					</div>

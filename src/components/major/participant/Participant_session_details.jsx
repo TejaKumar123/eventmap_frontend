@@ -200,6 +200,14 @@ const Participant_session_details = () => {
 						</div>
 
 					}
+					{session?.["status"] == 1 && session?.["acceptance"] == "accepted" &&
+						<div className="w-full h-auto flex flex-row items-center justify-start gap-[20px] flex-wrap">
+
+							<button className="bg-green-700 px-[20px] py-[1px] rounded-[20px]">
+								Session completed
+							</button>
+						</div>
+					}
 				</div>
 			</div>
 			{
