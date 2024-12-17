@@ -6,11 +6,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const speaker = () => {
 	return (
-		<div className="w-[100%] h-auto">
-			<Speaker_navbar />
-			<div className="w-[100%] h-auto flex flex-col items-center justify-start">
-				<Speaker_navigation />
-				<Speaker_content />
+		<div>
+
+			<div className="w-[100%] h-auto">
+				<Speaker_navbar />
+				<div className="w-[100%] h-auto flex flex-col items-center justify-start">
+					<Speaker_navigation />
+					<Speaker_content />
+				</div>
 			</div>
 			<ToastContainer theme="dark" />
 		</div>

@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import Errordesign from "../../basic/home/errordesign";
 import moment from "moment";
 import { sessionUpdate } from "../../../store/slices/sessionSlice";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch } from "react-redux";
 

@@ -35,7 +35,7 @@ const Session_add = () => {
 		/* data["session-image"] = file; */
 		try {
 			dispatch(sessionInsert(data)).then(action => {
-				console.log(action?.payload);
+				/* console.log(action?.payload); */
 				if (action?.payload?.status == "ok") {
 					toast.success("Successfully session added")
 					//reseting image and form

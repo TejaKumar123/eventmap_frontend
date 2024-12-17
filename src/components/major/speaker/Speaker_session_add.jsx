@@ -160,7 +160,6 @@ const Speaker_session_add = () => {
 					</div>
 				</form>
 			</div>
-			<ToastContainer theme="dark" draggable autoClose={5000} />
 		</ >
 	)
 }

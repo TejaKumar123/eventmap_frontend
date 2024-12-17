@@ -5,15 +5,28 @@ import Templatediv from "../../basic/other/Templatediv"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { setHeading } from "../../../store/slices/otherSlice"
-import { userData } from "../../../assets/data/data"
 import moment from "moment"
 import { v4 as uuid } from "uuid"
-import { findUser } from "../../../store/slices/userSlice"
+import { deleteUser, findUser } from "../../../store/slices/userSlice"
+import { Dialog } from "@mui/material"
+import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 const Admin_participant = () => {
 
 	const dispatch = useDispatch();
 	const [userData, setUserData] = useState([]);
+	const [open, setOpen] = useState(false);
+	const [deletedEmail, setDeletedEmail] = useState("");
+
+	const handleOpen = (email) => {
+		setOpen(true);
+		setDeletedEmail(email);
+	};
+	const handleClose = () => {
+		setOpen(false);
+		setDeletedEmail(false);
+	};
 
 	const fetchParticipants = async () => {
 		let criteria = { role: "participant" };
@@ -30,7 +43,18 @@ const Admin_participant = () => {
 	}
 
 	const deleteParticipant = async (email) => {
-		alert(email);
+		if (!email) { return; }
+		let criteria = { email: email };
+		dispatch(deleteUser({ criteria })).then(action => {
+			/* console.log(action?.payload); */
+			if (action?.payload?.status == "ok") {
+				toast.success("Participant removed successfully");
+				fetchParticipants();
+			}
+			else {
+				toast.error("error while removing the participant");
+			}
+		})
 	}
 
 	useEffect(() => {
@@ -65,7 +89,7 @@ const Admin_participant = () => {
 											email={data?.value?.["email"]}
 											registered={data?.value?.["registerCount"]}
 											date={moment(data?.value?.["createdAt"]).format("DD-MM-YYYY")}
-											onClick={deleteParticipant}
+											onClick={handleOpen}
 										/>
 									)
 								}
@@ -76,6 +100,47 @@ const Admin_participant = () => {
 					<p className="text-center opacity-[0.5] text-[150%]">There are no participants in eventmap</p>
 				}
 			</Templatediv>
+
+			<Dialog
+				open={open}
+				onClose={handleClose}
+				sx={{
+					width: "auto",
+					height: "auto",
+					overflow: "hidden",
+					"& .MuiDialog-paper": {
+						borderRadius: "5px",
+						backgroundColor: "transparent",
+					},
+					"& .MuiDialog-container": {
+						display: "flex",
+						flexDirection: "row",
+						alignItems: "start",
+						justifyContent: "center"
+					}
+				}}
+			>
+				<div className="w-[400px] h-auto p-[15px] flex flex-col items-center justify-start flex-wrap bg-[#281D63] gap-[10px]">
+					<p className="text-[110%] font-bold text-white">Do you really want to delete the speaker</p>
+					<div className="w-full h-auto flex flex-row items-center justify-end gap-[15px] flex-wrap">
+						<button
+							className="px-[10px] py-[2px] rounded-[5px] bg-green-700 text-white"
+							onClick={handleClose}
+						>
+							Cancel
+						</button>
+						<button
+							className="px-[10px] py-[2px] rounded-[5px] bg-red-700 text-white"
+							onClick={() => {
+								deleteParticipant(deletedEmail);
+								handleClose();
+							}}
+						>
+							Delete
+						</button>
+					</div>
+				</div>
+			</Dialog>
 
 		</>
 	)

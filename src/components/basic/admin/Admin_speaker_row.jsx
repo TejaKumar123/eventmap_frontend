@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid"
 
 const Admin_speaker_row = ({ icon, name, username, email, sessions, date, onClick }) => {
 
-	const deleteParticipant = async () => {
+	const deleteSpeaker = async () => {
 		onClick(email);
 	}
 
@@ -17,7 +17,7 @@ const Admin_speaker_row = ({ icon, name, username, email, sessions, date, onClic
 				<td className="text-center">{sessions}</td>
 				<td className="p-[2px_0px] text-center">{date}</td>
 				<td className="p-[2px_0px] text-center">
-					<Delete className="cursor-pointer" title="Delete this user" onClick={deleteParticipant} />
+					<Delete className="cursor-pointer" title="Delete this user" onClick={deleteSpeaker} />
 				</td>
 			</tr>
 		</>

@@ -19,7 +19,7 @@ const Participants_session_registrations = () => {
 		let criteria = { email: user.email };
 		let projection = { session_id: true, _id: false };
 		dispatch(registrationView({ criteria, projection })).then(action => {
-			console.log(action?.payload);
+			/* console.log(action?.payload); */
 			if (action?.payload?.status == "ok") {
 				fetchSessions(action?.payload?.data);
 			}
