@@ -52,7 +52,7 @@ const Participants_session_registrations = () => {
 		})
 		Promise.allSettled(updatedData)
 			.then((result) => {
-				console.log(result);
+				/* console.log(result); */
 				let finalData = result.map(value => {
 					if (value?.status == "fulfilled") {
 						return value?.value?.[0];
