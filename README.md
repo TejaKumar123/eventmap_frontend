@@ -13,7 +13,7 @@ EventMap is crafted to enhance the conference experience by providing tools for 
 2. Speakers: Propose sessions for admin approval, manage approved sessions, and view feedback to refine future presentations.
 3. Participants: Explore and enroll in admin-approved sessions and provide feedback.
 
-## Example UIS:
+## Sample UIs:
 ### Home Page:
 ![](readme_images/a.jpg)
 ### Login:
