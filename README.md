@@ -7,6 +7,7 @@ EventMap is crafted to enhance the conference experience by providing tools for 
 - Backend: ExpressJS, NodeJS
 - Database: MongoDB, Redis
 - Authentication: Google OAuth 2.0 alongside traditional email-based signup and login
+- Nodejs 22.5.1
 
 ## Key Features:
 1. Admin Panel: Manage users, approve speaker-created sessions, and control the conference schedule for better oversight.
